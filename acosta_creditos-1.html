@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b35">
+<title>Acosta Créditos</title>
+<style>
+:root{--green:#123b35;--green2:#1d6255;--mint:#e8f3ef;--bg:#f4f7f6;--ink:#1d2926;--muted:#687773;--line:#dce6e2;--red:#b42318;--gold:#a15c07}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,var(--green),var(--green2));color:white;padding:24px 18px 20px}
+.wrap{max-width:1050px;margin:auto}header h1{margin:0;font-size:25px}header p{margin:5px 0 0;color:#d7e9e3;font-size:13px}
+nav{display:flex;gap:8px;overflow:auto;padding:12px 14px;background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{white-space:nowrap;border:0;background:#eef3f1;color:var(--green);padding:10px 14px;border-radius:10px;font-weight:650}
+nav button.active{background:var(--green);color:white}
+main{max-width:1050px;margin:18px auto;padding:0 14px 40px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:0 2px 8px #153b3510}
+.card small{color:var(--muted)}.card strong{display:block;font-size:22px;margin-top:5px}
+.panel{margin-bottom:14px}.panel h2{font-size:18px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:block;font-size:13px;font-weight:650;color:#40514c;margin-bottom:5px}
+input,select{width:100%;padding:11px 12px;border:1px solid #cbd8d3;border-radius:9px;font:inherit;background:white;color:var(--ink)}
+input:focus,select:focus{outline:2px solid #9bc8ba;border-color:var(--green2)}
+.field{min-width:0}.full{grid-column:1/-1}
+button.primary,.secondary,.danger{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer}
+.primary{background:var(--green);color:white}.secondary{background:var(--mint);color:var(--green)}.danger{background:#fff0ee;color:var(--red)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line);vertical-align:middle}th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.tablewrap{overflow-x:auto}.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#fff3d9;color:var(--gold);font-size:12px;font-weight:700}.badge.ok{background:#e6f5ec;color:#17643a}
+.hidden{display:none!important}.muted{color:var(--muted)}.empty{padding:20px;text-align:center;color:var(--muted)}
+.search{max-width:340px;margin-bottom:12px}
+.installment{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.installment:last-child{border:0}.installment small{display:block;color:var(--muted)}
+.notice{background:#fff8e8;border:1px solid #f0dfb6;color:#6e5018;padding:12px;border-radius:10px;font-size:13px;line-height:1.45}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 14px 25px}
+@media(max-width:650px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.full{grid-column:auto}.card strong{font-size:19px}th,td{padding:9px 7px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Acosta Créditos</h1><p>Control sencillo de clientes, préstamos y cuotas</p></div></header>
+<nav>
+<button class="active" data-tab="inicio">Inicio</button>
+<button data-tab="clientes">Clientes</button>
+<button data-tab="prestamos">Préstamos</button>
+<button data-tab="pagos">Control de cuotas</button>
+<button data-tab="respaldo">Respaldo</button>
+</nav>
+<main>
+<section id="inicio" class="tab">
+<div class="cards">
+<div class="card"><small>Clientes registrados</small><strong id="totalClientes">0</strong></div>
+<div class="card"><small>Total prestado</small><strong id="totalPrestado">$0</strong></div>
+<div class="card"><small>Total a cobrar</small><strong id="totalCobrar">$0</strong></div>
+<div class="card"><small>Saldo pendiente</small><strong id="totalPendiente">$0</strong></div>
+</div>
+<div class="panel"><h2>Resumen de préstamos</h2><div id="resumen" class="empty">Todavía no hay préstamos cargados.</div></div>
+<div class="notice">Importante: esta primera versión guarda los datos en el navegador de este dispositivo. Usá la sección «Respaldo» para descargar una copia y conservar tus registros.</div>
+</section>
+
+<section id="clientes" class="tab hidden">
+<div class="panel"><h2>Agregar cliente</h2>
+<form id="formCliente" class="grid">
+<div class="field"><label>Nombre y apellido *</label><input id="nombre" required maxlength="90" placeholder="Ej.: Juan Pérez"></div>
+<div class="field"><label>Teléfono</label><input id="telefono" inputmode="tel" maxlength="30" placeholder="Ej.: 3764..."></div>
+<div class="field full"><label>Nota (opcional)</label><input id="nota" maxlength="180" placeholder="Dato adicional"></div>
+<div class="full"><button class="primary">Guardar cliente</button></div>
+</form></div>
+<div class="panel"><h2>Mis clientes</h2><input class="search" id="buscarCliente" placeholder="Buscar por nombre o teléfono"><div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Teléfono</th><th>Préstamos</th><th></th></tr></thead><tbody id="listaClientes"></tbody></table></div></div>
+</section>
+
+<section id="prestamos" class="tab hidden">
+<div class="panel"><h2>Cargar nuevo préstamo</h2>
+<form id="formPrestamo" class="grid">
+<div class="field full"><label>Cliente *</label><select id="clientePrestamo" required><option value="">Primero registrá un cliente</option></select></div>
+<div class="field"><label>Fecha del préstamo *</label><input id="fechaPrestamo" type="date" required></div>
+<div class="field"><label>Dinero prestado ($) *</label><input id="capital" type="number" min="1" step="0.01" required placeholder="100000"></div>
+<div class="field"><label>Interés (%) *</label><input id="interes" type="number" min="0" step="0.01" required value="20"></div>
+<div class="field"><label>Cantidad de cuotas *</label><select id="cantidadCuotas"><option value="1">1 cuota</option><option value="2">2 cuotas</option><option value="3" selected>3 cuotas</option></select></div>
+<div class="field full"><div class="notice" id="calculo">Total a devolver: $0 · Cada cuota: $0</div></div>
+<div class="full"><button class="primary">Guardar préstamo</button></div>
+</form></div>
+<div class="panel"><h2>Préstamos registrados</h2><div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Fecha</th><th>Capital</th><th>Total</th><th>Pagado</th><th>Saldo</th></tr></thead><tbody id="listaPrestamos"></tbody></table></div></div>
+</section>
+
+<section id="pagos" class="tab hidden">
+<div class="panel"><h2>Cuotas y pagos</h2><input class="search" id="buscarPago" placeholder="Buscar cliente"><div id="listaPagos"></div></div>
+</section>
+
+<section id="respaldo" class="tab hidden">
+<div class="panel"><h2>Guardar una copia de seguridad</h2><p class="muted">Descargá tus clientes y préstamos en un archivo. Guardalo en un lugar seguro.</p><div class="actions"><button class="primary" id="exportar">Descargar respaldo</button><label class="secondary" style="display:inline-flex;align-items:center;cursor:pointer">Restaurar respaldo<input id="importar" type="file" accept="application/json" hidden></label></div></div>
+<div class="notice">Privacidad: no cargues información innecesaria. Esta página no tiene contraseña ni sincronización online. Si borrás los datos del navegador o cambiás de dispositivo, podés perder la información si no guardaste un respaldo.</div>
+</section>
+</main>
+<footer>Acosta Créditos · Registro personal de préstamos</footer>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:2}).format(Number(n)||0);
+const today=new Date().toISOString().slice(0,10);
+let data={clientes:[],prestamos:[]};
+try{const saved=localStorage.getItem('acosta_creditos_v1');if(saved)data=JSON.parse(saved)}catch(e){}
+function save(){localStorage.setItem('acosta_creditos_v1',JSON.stringify(data));render()}
+function client(id){return data.clientes.find(c=>c.id===id)}
+function paid(p){return p.cuotas.filter(q=>q.pagada).reduce((s,q)=>s+q.importe,0)}
+function balance(p){return p.total-paid(p)}
+function render(){
+$('totalClientes').textContent=data.clientes.length;
+$('totalPrestado').textContent=money(data.prestamos.reduce((s,p)=>s+p.capital,0));
+$('totalCobrar').textContent=money(data.prestamos.reduce((s,p)=>s+p.total,0));
+$('totalPendiente').textContent=money(data.prestamos.reduce((s,p)=>s+balance(p),0));
+$('resumen').innerHTML=data.prestamos.length?`<div class="tablewrap"><table><thead><tr><th>Cliente</th><th>Préstamo</th><th>Saldo pendiente</th><th>Estado</th></tr></thead><tbody>${data.prestamos.slice().reverse().map(p=>`<tr><td>${esc(client(p.clienteId)?.nombre||'Cliente eliminado')}</td><td>${money(p.capital)}</td><td>${money(balance(p))}</td><td><span class="badge ${balance(p)<=0?'ok':''}">${balance(p)<=0?'Pagado':'Pendiente'}</span></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Todavía no hay préstamos cargados.</div>';
+const term=$('buscarCliente').value.toLowerCase();
+$('listaClientes').innerHTML=data.clientes.filter(c=>(c.nombre+' '+c.telefono).toLowerCase().includes(term)).map(c=>`<tr><td>${esc(c.nombre)}</td><td>${esc(c.telefono||'—')}</td><td>${data.prestamos.filter(p=>p.clienteId===c.id).length}</td><td><button class="danger" onclick="borrarCliente('${c.id}')">Eliminar</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">No hay clientes.</td></tr>';
+$('clientePrestamo').innerHTML='<option value="">Seleccionar cliente</option>'+data.clientes.map(c=>`<option value="${c.id}">${esc(c.nombre)}</option>`).join('');
+$('listaPrestamos').innerHTML=data.prestamos.slice().reverse().map(p=>`<tr><td>${esc(client(p.clienteId)?.nombre||'—')}</td><td>${p.fecha}</td><td>${money(p.capital)}</td><td>${money(p.total)}</td><td>${money(paid(p))}</td><td>${money(balance(p))}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No hay préstamos registrados.</td></tr>';
+const qterm=$('buscarPago').value.toLowerCase();
+$('listaPagos').innerHTML=data.prestamos.slice().reverse().filter(p=>(client(p.clienteId)?.nombre||'').toLowerCase().includes(qterm)).map(p=>`<div class="panel"><strong>${esc(client(p.clienteId)?.nombre||'Cliente')}</strong><div class="muted" style="font-size:13px;margin:4px 0 8px">Préstamo ${money(p.capital)} · Total ${money(p.total)} · Saldo ${money(balance(p))}</div>${p.cuotas.map((q,i)=>`<div class="installment"><div><b>Cuota ${i+1}: ${money(q.importe)}</b><small>${q.fechaPago?'Pagada el '+q.fechaPago:'Pendiente'}</small></div>${q.pagada?'<span class="badge ok">Pagada</span>':`<button class="secondary" onclick="marcarPago('${p.id}',${i})">Marcar pagada</button>`}</div>`).join('')}</div>`).join('')||'<div class="empty">No hay cuotas para mostrar.</div>';
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function borrarCliente(id){if(data.prestamos.some(p=>p.clienteId===id)){alert('No se puede eliminar: este cliente tiene préstamos registrados.');return}if(confirm('¿Eliminar este cliente?')){data.clientes=data.clientes.filter(c=>c.id!==id);save()}}
+function marcarPago(pid,i){const p=data.prestamos.find(x=>x.id===pid);if(!p)return;if(confirm('¿Confirmás que recibiste esta cuota?')){p.cuotas[i].pagada=true;p.cuotas[i].fechaPago=today;save()}}
+$('formCliente').addEventListener('submit',e=>{e.preventDefault();data.clientes.push({id:crypto.randomUUID(),nombre:$('nombre').value.trim(),telefono:$('telefono').value.trim(),nota:$('nota').value.trim()});e.target.reset();save();alert('Cliente guardado.')});
+function calc(){const cap=Number($('capital').value)||0, rate=Number($('interes').value)||0,n=Number($('cantidadCuotas').value)||1,total=cap*(1+rate/100);$('calculo').textContent=`Total a devolver: ${money(total)} · Cada cuota: ${money(total/n)}`}
+['capital','interes','cantidadCuotas'].forEach(id=>$(id).addEventListener('input',calc));
+$('formPrestamo').addEventListener('submit',e=>{e.preventDefault();const cap=Number($('capital').value),rate=Number($('interes').value),n=Number($('cantidadCuotas').value),total=Math.round(cap*(1+rate/100)*100)/100,each=Math.round(total/n*100)/100;let cuotas=Array.from({length:n},(_,i)=>({importe:i===n-1?Math.round((total-each*(n-1))*100)/100:each,pagada:false,fechaPago:null}));data.prestamos.push({id:crypto.randomUUID(),clienteId:$('clientePrestamo').value,fecha:$('fechaPrestamo').value,capital:cap,interes:rate,total,cuotas});e.target.reset();$('fechaPrestamo').value=today;$('interes').value=20;$('cantidadCuotas').value=3;calc();save();alert('Préstamo guardado.')});
+$('buscarCliente').addEventListener('input',render);$('buscarPago').addEventListener('input',render);
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.tab').forEach(x=>x.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden')}));
+$('exportar').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='respaldo-acosta-creditos.json';a.click();URL.revokeObjectURL(a.href)};
+$('importar').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.clientes)||!Array.isArray(d.prestamos))throw Error();if(confirm('Esto reemplazará los datos actuales. ¿Continuar?')){data=d;save();alert('Respaldo restaurado.')}}catch(err){alert('El archivo no parece ser un respaldo válido.')}e.target.value=''};
+$('fechaPrestamo').value=today;calc();render();
+</script>
+</body></html>
